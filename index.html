@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <link rel="icon" href="http://www.kennethbigler.com/assets/img/favicon.png" />
+        <title>My Calendar</title>
+        <meta name="description" content="Calendar implementation for Smart Car's Technical Question">
+        <meta name="author" content="Kenneth Bigler">
+        <link rel="stylesheet" href="mystyles.css" type='text/css' media="all">
+        <link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Open+Sans'/>
+        <script type="text/javascript">
+            // Asynchronous load of JS to improve page performance
+            [
+                'https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular.js',
+                'app.js'
+            ].forEach(function(src) {
+                var script = document.createElement('script');
+                script.src = src;
+                script.async = false; 
+                document.head.appendChild(script);
+            });
+        </script>
+    </head>
+    <!---------------------------------------------------------------------------------------------------->
+    <body id="myControllerElement" ng-app="myApp" ng-controller="MyController">
+        <h2 class="blue">SmartCar Calendar</h2>
+        <div class="times">
+            <div ng-repeat="time in times track by $index" style="height: {{unitHeight}}px; line-height: {{unitHeight}}px;"><span ng-class-odd="'odd'" ng-class-even="'even'">{{ time.h }} </span><span class="even">{{ time.ap }}</span></div>
+        </div>
+        <div class="eventBox" style="width: {{width}}px; height: {{height}}px; margin-top: {{unitHeight / 2}}px">
+        </div>
+    </body>
+    <div ng-if="false">
+        <h1>Loading the application, please hold on...</h1>
+    </div>
+</html>

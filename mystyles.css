@@ -1,0 +1,33 @@
+body {
+    font-family: "Open Sans";
+}
+
+.odd {
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.even {
+    font-size: 10px;
+    color: darkgray;
+}
+
+.times {
+    width: 72px;
+    display: inline;
+    float: left;
+    text-align: right;
+    padding-right: 10px;
+}
+
+.eventBox {
+    float: left;
+    padding-left: 10px;
+    padding-right: 10px;
+    background-color: #f0f0f0;
+    border-left: 1px solid darkgray;
+}
+
+.blue {
+    color: #1565C0;
+}
