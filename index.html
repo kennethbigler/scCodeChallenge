@@ -8,29 +8,18 @@
         <meta name="author" content="Kenneth Bigler">
         <link rel="stylesheet" href="mystyles.css" type='text/css' media="all">
         <link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Open+Sans'/>
-        <script type="text/javascript">
-            // Asynchronous load of JS to improve page performance
-            [
-                'https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular.js',
-                'app.js'
-            ].forEach(function(src) {
-                var script = document.createElement('script');
-                script.src = src;
-                script.async = false; 
-                document.head.appendChild(script);
-            });
-        </script>
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular.js"></script>
+        <script type="text/javascript" src="app.js"></script>
     </head>
-    <!---------------------------------------------------------------------------------------------------->
     <body id="myControllerElement" ng-app="myApp" ng-controller="MyController">
         <h2 class="blue">SmartCar Calendar</h2>
         <div class="times">
             <div ng-repeat="time in times track by $index" style="height: {{unitHeight}}px; line-height: {{unitHeight}}px;"><span ng-class-odd="'odd'" ng-class-even="'even'">{{ time.h }} </span><span class="even">{{ time.ap }}</span></div>
         </div>
         <div class="eventBox" style="width: {{width}}px; height: {{height}}px; margin-top: {{unitHeight / 2}}px">
-            <div class="box" ng-repeat="e in events track by $index" style="top: {{e.start}}px; height: {{e.end - e.start}}px; left: {{e.left}}px; width: {{e.width}}px;">
-                <span class="odd blue">Sample Item</span><br />
-                <span class="even">Sample Location</span>
+            <div class="box" ng-repeat="e in events track by $index" style="top: {{e.start}}px; height: {{e.height}}px; left: {{e.left}}px; width: {{e.width}}px;">
+                <p class="odd blue boxText">Sample Item</p>
+                <p class="even boxText">Sample Location</p>
             </div>
         </div>
     </body>

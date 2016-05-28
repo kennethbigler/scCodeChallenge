@@ -68,6 +68,7 @@ var app = angular.module('myApp', [])
             // 3. An event should utilize the maximum width available, but rule #2 takes precedence over this rule.
             for (i = 0; i < events.length; i += 1) {
                 j = events[i].leftCounter + events[i].rightCounter + 1;
+                events[i].height = events[i].end - events[i].start - 7;
                 events[i].width = ($scope.width / j) - 5;
                 events[i].left = events[i].leftCounter * (events[i].width + 5) + 10;
             }
@@ -107,8 +108,6 @@ var app = angular.module('myApp', [])
 function layOutDay(events) {
     'use strict';
     angular.element(document.getElementById('myControllerElement')).scope().layOutDay(events);
-    // presumptuous return
-    return "Success";
 }
 
 window.onload = function () {
