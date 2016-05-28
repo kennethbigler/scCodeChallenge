@@ -113,14 +113,9 @@ function layOutDay(events) {
 
 window.onload = function () {
     'use strict';
-    var input = [{ start: 30, end: 100 },
-                { start: 100, end: 150 },
-                { start: 180, end: 240 },
-                { start: 540, end: 600 },
-                { start: 560, end: 620 },
-                { start: 560, end: 620 },
-                { start: 120,  end: 630 },
-                { start: 610, end: 670 }];
+    var input = [{ start: 30, end: 150 },
+                 { start: 540, end: 600 },
+                 { start: 560, end: 620 },
+                 { start: 610, end: 670 }];
     layOutDay(input);
-    //layOutDay([{ start: 30, end: 150 }, { start: 540, end: 600 }, { start: 560, end: 620 }, { start: 610, end: 670 }]);
 };
