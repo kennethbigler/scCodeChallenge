@@ -28,6 +28,10 @@
             <div ng-repeat="time in times track by $index" style="height: {{unitHeight}}px; line-height: {{unitHeight}}px;"><span ng-class-odd="'odd'" ng-class-even="'even'">{{ time.h }} </span><span class="even">{{ time.ap }}</span></div>
         </div>
         <div class="eventBox" style="width: {{width}}px; height: {{height}}px; margin-top: {{unitHeight / 2}}px">
+            <div class="box" ng-repeat="e in events track by $index" style="top: {{e.start}}px; height: {{e.end - e.start}}px; left: {{e.left}}px; width: {{e.width}}px;">
+                <span class="odd blue">Sample Item</span><br />
+                <span class="even">Sample Location</span>
+            </div>
         </div>
     </body>
     <div ng-if="false">

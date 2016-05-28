@@ -3,7 +3,6 @@
 var app = angular.module('myApp', [])
     .controller('MyController', ['$scope', '$log', function ($scope, $log) {
         'use strict';
-        // set variables
         $scope.times = [{h: "9:00", ap: "AM"}, {h: "9:30", ap: ""},
                         {h: "10:00", ap: "AM"}, {h: "10:30", ap: ""},
                         {h: "11:00", ap: "AM"}, {h: "11:30", ap: ""},
@@ -20,6 +19,7 @@ var app = angular.module('myApp', [])
         // height should be number of minutes from 9am until end
         $scope.height = 720;
         $scope.width = 600;
+        $scope.events = [];
         
         /* set the unit height dynamically
          * allows for center of 9 at top and center of 9 at bottom
@@ -34,14 +34,72 @@ var app = angular.module('myApp', [])
           * @param {Number} events.end the number of minutes after 9am when the event ends
           */
         $scope.layOutDay = function (events) {
-            var i;
+            var i, j, wStart, wEnd, counter = 0;
             
+            // sort elements by "end" variable
+            events.sort(function (a, b) {return a.end - b.end; });
+            
+            // set the tracking counters to 0
             for (i = 0; i < events.length; i += 1) {
-                events[i].start /= $scope.height;
-                events[i].end /= $scope.height;
+                events[i].rightCounter = 0;
+                events[i].leftCounter = 0;
             }
             
-            $log.log(events);
+            // thinking need left conflicts counter, right conflicts counter, then place
+            for (i = 0; i < events.length; i += 1) {
+                counter = 0;
+                for (j = i + 1; j < events.length; j += 1) {
+                    if ((events[i].start >= events[j].start && events[i].start < events[j].end) || (events[i].end > events[j].start && events[i].end <= events[j].end)) {
+                        counter += 1;
+                        // move some conflicts to fill in empty space
+                        if (events[i].leftCounter > events[j].leftCounter) {
+                            events[j].rightCounter += 1;
+                        } else {
+                            events[i].rightCounter += 1;
+                            if (counter > events[j].leftCounter) {
+                                events[j].leftCounter = counter;
+                            }
+                        }
+                    }
+                }
+            }
+            
+            // variables in view to set: top (start), height (end - start), left and width set below
+            // 3. An event should utilize the maximum width available, but rule #2 takes precedence over this rule.
+            for (i = 0; i < events.length; i += 1) {
+                j = events[i].leftCounter + events[i].rightCounter + 1;
+                events[i].width = ($scope.width / j) - 5;
+                events[i].left = events[i].leftCounter * (events[i].width + 5) + 10;
+            }
+            
+            // 2. If two events collide in time, they must have the same width.
+            // find window for smallest element
+            j = $scope.width - 5;
+            for (i = 0; i < events.length; i += 1) {
+                if (j > events[i].width) {
+                    j = events[i].width;
+                    wStart = events[i].start;
+                    wEnd = events[i].end;
+                } else if (j === events[i].width) {
+                    if (events[i].start < wStart) {
+                        wStart = events[i].start;
+                    }
+                    if (events[i].end > wEnd) {
+                        wEnd = events[i].end;
+                    }
+                }
+            }
+            
+            // set all events in smallest element window to that width
+            for (i = 0; i < events.length; i += 1) {
+                if ((events[i].start >= wStart && events[i].start < wEnd) || (events[i].end > wStart && events[i].end <= wEnd)) {
+                    events[i].width = j;
+                }
+            }
+            
+            // set variable to the view and apply it
+            $scope.events = events;
+            $scope.$apply();
         };
     }]);
 
@@ -49,13 +107,20 @@ var app = angular.module('myApp', [])
 function layOutDay(events) {
     'use strict';
     angular.element(document.getElementById('myControllerElement')).scope().layOutDay(events);
+    // presumptuous return
+    return "Success";
 }
 
 window.onload = function () {
     'use strict';
-    var input = [{ start: 30, end: 150 },
+    var input = [{ start: 30, end: 100 },
+                { start: 100, end: 150 },
+                { start: 180, end: 240 },
                 { start: 540, end: 600 },
                 { start: 560, end: 620 },
+                { start: 560, end: 620 },
+                { start: 120,  end: 630 },
                 { start: 610, end: 670 }];
     layOutDay(input);
+    //layOutDay([{ start: 30, end: 150 }, { start: 540, end: 600 }, { start: 560, end: 620 }, { start: 610, end: 670 }]);
 };
