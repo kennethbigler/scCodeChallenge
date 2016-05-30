@@ -45,7 +45,7 @@ var app = angular.module('myApp', [])
                 events[i].leftCounter = 0;
             }
             
-            // thinking need left conflicts counter, right conflicts counter, then place
+            // need left conflicts counter, right conflicts counter, then place
             for (i = 0; i < events.length; i += 1) {
                 counter = 0;
                 for (j = i + 1; j < events.length; j += 1) {
@@ -54,6 +54,9 @@ var app = angular.module('myApp', [])
                         // move some conflicts to fill in empty space
                         if (events[i].leftCounter > events[j].leftCounter) {
                             events[j].rightCounter += 1;
+                            if (counter > events[j].leftCounter) {
+                                events[i].leftCounter = counter;
+                            }
                         } else {
                             events[i].rightCounter += 1;
                             if (counter > events[j].leftCounter) {
@@ -68,8 +71,11 @@ var app = angular.module('myApp', [])
             // 3. An event should utilize the maximum width available, but rule #2 takes precedence over this rule.
             for (i = 0; i < events.length; i += 1) {
                 j = events[i].leftCounter + events[i].rightCounter + 1;
+                // ans - padding(5) - border-top(1) - border-top(1) = ans - 7
                 events[i].height = events[i].end - events[i].start - 7;
+                // ans - padding(5)
                 events[i].width = ($scope.width / j) - 5;
+                // leftCounter * (width + padding(5)) + padding(10);
                 events[i].left = events[i].leftCounter * (events[i].width + 5) + 10;
             }
             
@@ -90,7 +96,6 @@ var app = angular.module('myApp', [])
                     }
                 }
             }
-            
             // set all events in smallest element window to that width
             for (i = 0; i < events.length; i += 1) {
                 if ((events[i].start >= wStart && events[i].start < wEnd) || (events[i].end > wStart && events[i].end <= wEnd)) {
@@ -100,6 +105,7 @@ var app = angular.module('myApp', [])
             
             // set variable to the view and apply it
             $scope.events = events;
+            // $log.log(events);
             $scope.$apply();
         };
     }]);
@@ -116,5 +122,7 @@ window.onload = function () {
                  { start: 540, end: 600 },
                  { start: 560, end: 620 },
                  { start: 610, end: 670 }];
+    //input = [{ start: 30, end: 150 }, { start: 100, end: 610 }, { start: 560, end: 620 }, { start: 560, end: 700 }];
+    //input = [{ start: 30, end: 150 }, { start: 100, end: 610 }, { start: 560, end: 620 }, { start: 560, end: 700 }, {start: 360, end: 420}, {start: 10, end: 700}];
     layOutDay(input);
 };
